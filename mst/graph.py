@@ -46,7 +46,7 @@ class Graph:
         visited = [start_node]
         x = self.adj_mat
         edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwhere(x[start_node] != 0).flatten()]
-        mst = np.zeros(list(self.adj_mat.shape[0]))
+        mst = np.zeros(list(self.adj_mat.shape))
         while(len(visited) < self.adj_mat.shape[0]):
             newly_visited_edge = heapq.heappop(edge_heap)
             new_node = newly_visited_edge[1][1]
