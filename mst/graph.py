@@ -1,6 +1,7 @@
 import numpy as np
 import heapq
 from typing import Union
+import random
 
 class Graph:
 
@@ -41,4 +42,20 @@ class Graph:
         `heapify`, `heappop`, and `heappush` functions.
 
         """
-        self.mst = None
+        start_node = random.randint(0, self.adj_mat.shape[0] - 1)
+        visited = [start_node]
+        x = self.adj_mat
+        edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwhere(x[start_node] != 0).flatten()]
+        mst = np.zeros(list(self.adj_mat.shape[0]))
+        while(len(visited) < self.adj_mat.shape[0]):
+            newly_visited_edge = heapq.heappop(edge_heap)
+            new_node = newly_visited_edge[1][1]
+            while new_node in visited:
+                newly_visited_edge = heapq.heappop(edge_heap)
+                new_node = newly_visited_edge[1][1]
+            mst[newly_visited_edge[1][0], new_node] = newly_visited_edge[0]
+            mst[new_node, newly_visited_edge[1][0]] = newly_visited_edge[0]
+            edge_heap = list(edge_heap).extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
+            heapq.heapify(edge_heap)
+            visited.append(new_node)
+        self.mst = mst
