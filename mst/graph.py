@@ -55,7 +55,7 @@ class Graph:
                 new_node = newly_visited_edge[1][1]
             mst[newly_visited_edge[1][0], new_node] = newly_visited_edge[0]
             mst[new_node, newly_visited_edge[1][0]] = newly_visited_edge[0]
-            edge_heap = list(edge_heap).extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
+            edge_heap.extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
             heapq.heapify(edge_heap)
             visited.append(new_node)
         self.mst = mst
