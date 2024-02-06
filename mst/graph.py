@@ -49,10 +49,10 @@ class Graph:
         mst = np.zeros(list(self.adj_mat.shape))
         while(len(visited) < self.adj_mat.shape[0]):
             newly_visited_edge = heapq.heappop(edge_heap)
-            new_node = newly_visited_edge[1][1]
-            while new_node in visited:
+            new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+            while ((new_node in visited) and (newly_visited_edge[1][0] in visited)):
                 newly_visited_edge = heapq.heappop(edge_heap)
-                new_node = newly_visited_edge[1][1]
+                new_node = new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             mst[newly_visited_edge[1][0], new_node] = newly_visited_edge[0]
             mst[new_node, newly_visited_edge[1][0]] = newly_visited_edge[0]
             edge_heap.extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
