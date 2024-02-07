@@ -44,18 +44,28 @@ class Graph:
         """
         start_node = random.randint(0, self.adj_mat.shape[0] - 1)
         visited = [start_node]
+        to_be_visited = [i for i in range(self.adj_mat.shape[0]) if i != start_node]
         x = self.adj_mat
         edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwhere(x[start_node] != 0).flatten()]
         mst = np.zeros(list(self.adj_mat.shape))
-        while(len(visited) < self.adj_mat.shape[0]):
+        while(len(to_be_visited) != 0):
+            if len(edge_heap) == 0:
+                start_node = to_be_visited[random.randint(0, len(to_be_visited)-1)]
+                visited = [start_node]
+                edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
             newly_visited_edge = heapq.heappop(edge_heap)
             new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             while ((new_node in visited) and (newly_visited_edge[1][0] in visited)):
+                if len(edge_heap) == 0:
+                    start_node = to_be_visited[random.randint(0, len(to_be_visited)-1)]
+                    visited = [start_node]
+                    edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
                 newly_visited_edge = heapq.heappop(edge_heap)
-                new_node = new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+                new_node = new_node = newly_visited_edged[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             mst[newly_visited_edge[1][0], newly_visited_edge[1][1]] = newly_visited_edge[0]
             mst[newly_visited_edge[1][1], newly_visited_edge[1][0]] = newly_visited_edge[0]
             edge_heap.extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
             heapq.heapify(edge_heap)
             visited.append(new_node)
+            to_be_visited.remove(new_node)
         self.mst = mst
