@@ -44,33 +44,18 @@ class Graph:
         """
         start_node = random.randint(0, self.adj_mat.shape[0] - 1)
         visited = [start_node]
-        #to_be_visited = [i for i in range(self.adj_mat.shape[0]) if i != start_node]
         x = self.adj_mat
         edge_heap = [(x[start_node, i], start_node, i) for i in np.argwhere(x[start_node] != 0).flatten()]
+        heapq.heapify(edge_heap)
         mst = np.zeros_like(self.adj_mat)
         while(len(edge_heap) != 0):
-            # if len(edge_heap) == 0:
-            #     start_node = to_be_visited[random.randint(0, len(to_be_visited)-1)]
-            #     visited = [start_node]
-            #     edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
             new_edge = heapq.heappop(edge_heap)
-            #new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             new_node = new_edge[2]
             if new_node in visited:
                 continue
-            # while ((new_node in visited) and (newly_visited_edge[1][0] in visited)):
-            #     if len(edge_heap) == 0:
-            #         start_node = to_be_visited[random.randint(0, len(to_be_visited)-1)]
-            #         visited = [start_node]
-            #         edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
-            #     newly_visited_edge = heapq.heappop(edge_heap)
-            #     #new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
-            #     new_node = newly_visited_edge[1][1]
-            # new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             mst[new_edge[1], new_edge[2]] = new_edge[0]
             mst[new_edge[2], new_edge[1]] = new_edge[0]
             edges_to_add = [(x[new_node, i], new_node, i) for i in np.argwhere(x[new_node] != 0).flatten()]
-            print(edges_to_add)
             visited.append(new_node)
             for i in edges_to_add:
                 heapq.heappush(edge_heap, i)
