@@ -54,14 +54,17 @@ class Graph:
                 visited = [start_node]
                 edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
             newly_visited_edge = heapq.heappop(edge_heap)
-            new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+            #new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+            new_node = newly_visited_edge[1][1]
             while ((new_node in visited) and (newly_visited_edge[1][0] in visited)):
                 if len(edge_heap) == 0:
                     start_node = to_be_visited[random.randint(0, len(to_be_visited)-1)]
                     visited = [start_node]
                     edge_heap = [(x[start_node, i], (start_node, i)) for i in np.argwherex(x[start_node] != 0).flatten()]
                 newly_visited_edge = heapq.heappop(edge_heap)
-                new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+                #new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
+                new_node = newly_visited_edge[1][1]
+            new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             mst[newly_visited_edge[1][0], newly_visited_edge[1][1]] = newly_visited_edge[0]
             mst[newly_visited_edge[1][1], newly_visited_edge[1][0]] = newly_visited_edge[0]
             edge_heap.extend([(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten()])
