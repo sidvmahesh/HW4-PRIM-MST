@@ -57,6 +57,7 @@ class Graph:
             #new_node = newly_visited_edge[1][1] if (newly_visited_edge[1][1] not in visited) else newly_visited_edge[1][0]
             new_node = new_edge[1][1]
             if new_node in visited:
+                assert new_edge[1][0] in visited
                 continue
             # while ((new_node in visited) and (newly_visited_edge[1][0] in visited)):
             #     if len(edge_heap) == 0:
