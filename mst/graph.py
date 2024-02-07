@@ -73,7 +73,6 @@ class Graph:
             edges_to_add = [(x[new_node, i], (new_node, i)) for i in np.argwhere(x[new_node] != 0).flatten() if i not in visited]
             for i in edges_to_add:
                 heapq.heappush(edge_heap, i)
-            heapq.heapify(edge_heap)
             visited.append(new_node)
             # to_be_visited.remove(new_node)
         self.mst = mst
