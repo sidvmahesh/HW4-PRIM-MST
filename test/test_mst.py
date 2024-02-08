@@ -34,6 +34,10 @@ def check_mst(adj_mat: np.ndarray,
         for j in range(i+1):
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
+    # Assert that the MST is symmetric (mst[i][j] == mst[j][i])
+    for i in range(mst.shape[0]):
+        for j in range(mst.shape[0]):
+            assert mst[i][j] == mst[j][i]
 
 
 def test_mst_small():
@@ -71,4 +75,15 @@ def test_mst_student():
     TODO: Write at least one unit test for MST construction.
     
     """
-    pass
+    file_path = './data/slingshot_example.txt'
+    coords = np.loadtxt(file_path) # load coordinates of single cells in low-dimensional subspace
+    dist_mat = pairwise_distances(coords) # compute pairwise distances to form graph
+    g = Graph(dist_mat)
+    g.construct_mst()
+    summation = np.sum(g.mst > 0, axis = 1)
+    for i in range(g.mst.shape[0]):
+        assert summation[i] >= 1 # Assert that each node has at least one edge
+        assert g.mst[i][i] == 0 # Assert that there are no self edges
+        # 2 Unit tests in one (2 assertions)
+
+

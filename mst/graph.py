@@ -44,15 +44,15 @@ class Graph:
         """
         start_node = random.randint(0, self.adj_mat.shape[0] - 1)
         visited = [start_node]
-        x = self.adj_mat
+        x = self.adj_mat # Just for simpler reference downstream
         edge_heap = [(x[start_node, i], start_node, i) for i in np.argwhere(x[start_node] != 0).flatten()]
-        heapq.heapify(edge_heap)
+        heapq.heapify(edge_heap) # Transform the unsorted list to a heap
         mst = np.zeros_like(self.adj_mat)
         while(len(edge_heap) != 0):
             new_edge = heapq.heappop(edge_heap)
             new_node = new_edge[2]
             if new_node in visited:
-                continue
+                continue # We shouldn't add edges between two nodes already in the mst
             mst[new_edge[1], new_edge[2]] = new_edge[0]
             mst[new_edge[2], new_edge[1]] = new_edge[0]
             edges_to_add = [(x[new_node, i], new_node, i) for i in np.argwhere(x[new_node] != 0).flatten()]
